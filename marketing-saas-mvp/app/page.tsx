@@ -4,12 +4,13 @@ export default function HomePage() {
   return (
     <main className="page">
       <div className="container hero">
-        <div className="card">
-          <span className="badge">MVP pronto para validar venda</span>
-          <h1>Transforme briefing solto em diagnóstico, estratégia e conteúdo.</h1>
+        <div className="hero-panel">
+          <span className="badge">Decision trace engine</span>
+          <h1>Reduza decisões ruins com briefing, critérios, decisão, plano e auditoria.</h1>
           <p>
-            Este projeto já vem com dashboard simples, autenticação básica de admin,
-            endpoint com OpenAI, histórico das execuções e banco local com Prisma.
+            TraceLayer transforma contexto solto em uma saída institucional:
+            fatos separados de hipóteses, critérios explícitos, plano executável
+            e trilha auditável para revisão.
           </p>
           <div className="row" style={{ marginTop: 20 }}>
             <Link href="/login" className="button">Entrar</Link>

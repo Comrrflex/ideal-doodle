@@ -3,7 +3,8 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { DEFAULT_MODEL, openai } from "@/lib/openai";
 import { requireSession } from "@/lib/auth";
-import { MarketingOutput } from "@/lib/types";
+import { DecisionTraceOutput } from "@/lib/types";
+import { validateAndStampDecisionTrace } from "@/lib/decisionTrace";
 
 const schema = z.object({
   projectId: z.string().min(1)
@@ -12,23 +13,98 @@ const schema = z.object({
 const outputSchema = {
   type: "object",
   properties: {
-    diagnostico: { type: "string" },
-    oportunidade_principal: { type: "string" },
-    estrategia_recomendada: { type: "string" },
-    conteudo_gerado: { type: "string" },
-    objecoes_respondidas: {
-      type: "array",
-      items: { type: "string" }
+    briefing: {
+      type: "object",
+      properties: {
+        contexto: { type: "string" },
+        objetivo: { type: "string" },
+        restricoes: { type: "array", items: { type: "string" } },
+        partes_interessadas: { type: "array", items: { type: "string" } }
+      },
+      required: ["contexto", "objetivo", "restricoes", "partes_interessadas"],
+      additionalProperties: false
     },
-    proximo_passo: { type: "string" }
+    extracao_de_fatos: {
+      type: "object",
+      properties: {
+        fatos_confirmados: { type: "array", items: { type: "string" } },
+        evidencias_usadas: { type: "array", items: { type: "string" } },
+        lacunas: { type: "array", items: { type: "string" } }
+      },
+      required: ["fatos_confirmados", "evidencias_usadas", "lacunas"],
+      additionalProperties: false
+    },
+    hipoteses: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          hipotese: { type: "string" },
+          confianca: { type: "string", enum: ["baixa", "media", "alta"] },
+          como_validar: { type: "string" }
+        },
+        required: ["hipotese", "confianca", "como_validar"],
+        additionalProperties: false
+      }
+    },
+    criterios: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          criterio: { type: "string" },
+          peso: { type: "string", enum: ["LOW", "MEDIUM", "HIGH"] },
+          motivo: { type: "string" }
+        },
+        required: ["criterio", "peso", "motivo"],
+        additionalProperties: false
+      }
+    },
+    decisao: {
+      type: "object",
+      properties: {
+        recomendacao: { type: "string" },
+        tipo: { type: "string" },
+        confianca: { type: "string", enum: ["baixa", "media", "alta"] },
+        requer_aprovacao_humana: { type: "boolean" }
+      },
+      required: ["recomendacao", "tipo", "confianca", "requer_aprovacao_humana"],
+      additionalProperties: false
+    },
+    plano: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          passo: { type: "string" },
+          prioridade: { type: "string", enum: ["LOW", "MEDIUM", "HIGH"] },
+          dono: { type: "string" },
+          prazo_sugerido: { type: "string" }
+        },
+        required: ["passo", "prioridade", "dono", "prazo_sugerido"],
+        additionalProperties: false
+      }
+    },
+    trilha_auditavel: {
+      type: "object",
+      properties: {
+        regras_aplicadas: { type: "array", items: { type: "string" } },
+        riscos: { type: "array", items: { type: "string" } },
+        versao_decisao: { type: "string" },
+        hash_referencia: { type: "string" }
+      },
+      required: ["regras_aplicadas", "riscos", "versao_decisao", "hash_referencia"],
+      additionalProperties: false
+    },
   },
   required: [
-    "diagnostico",
-    "oportunidade_principal",
-    "estrategia_recomendada",
-    "conteudo_gerado",
-    "objecoes_respondidas",
-    "proximo_passo"
+    "briefing",
+    "extracao_de_fatos",
+    "hipoteses",
+    "criterios",
+    "decisao",
+    "plano",
+    "trilha_auditavel"
   ],
   additionalProperties: false
 };
@@ -54,39 +130,53 @@ export async function POST(req: Request) {
     }
 
     const systemPrompt = `
-Você é um sistema avançado de apoio a decisores, orientado por dados, estrutura, rastreabilidade e conversão.
+Você é o TraceLayer, um engine de decisão estruturada para organizações que precisam reduzir decisões ruins, preservar rastreabilidade e executar com governança.
 
 Siga exatamente esta ordem de raciocínio e saída:
-1. Diagnóstico
-2. Oportunidade principal
-3. Estratégia recomendada
-4. Conteúdo gerado
-5. Objeções respondidas
-6. Próximo passo recomendado
+1. Briefing
+2. Extração de fatos
+3. Hipóteses
+4. Critérios
+5. Decisão
+6. Plano
+7. Trilha auditável
 
 Regras obrigatórias:
-- Não invente dados, números, métricas ou depoimentos
-- Se faltar prova, explicite a ausência e sugira o que inserir
-- Foque em clareza, coerência, prova, conversão e rastreabilidade
+- Não venda "IA"; venda redução de decisão ruim, rastreabilidade, governança e execução consistente
+- Não invente dados, números, métricas, provas ou depoimentos
+- Separe fatos confirmados, hipóteses e lacunas
+- Se faltar prova, registre a lacuna e diga como validar
+- Toda decisão deve declarar critérios, riscos, aprovação humana e plano executável
+- A trilha auditável deve permitir revisar por que a decisão foi sugerida
 - Use português do Brasil
-- Seja direto, persuasivo, estratégico e pronto para uso
-- No conteúdo, siga a lógica: problema, quebra de crença, solução, prova, oferta
-- Se houver contexto de venda, responda às objeções: "é caro", "não sei usar", "vou fazer sozinho"
+- Seja direto, executivo e institucional
 `;
 
     const userPrompt = `
-Contexto do projeto:
+Briefing bruto:
 - Nome: ${project.name}
-- Produto: ${project.product}
-- Público: ${project.audience}
+- Contexto/ativo decisório: ${project.product}
+- Partes interessadas/público: ${project.audience}
 - Objetivo: ${project.objective}
-- Oferta: ${project.offer || "não informado"}
-- Canal: ${project.channel || "não informado"}
-- Objeções: ${project.objections || "não informado"}
-- Estágio: ${project.stage || "não informado"}
+- Restrições/recursos: ${project.offer || "não informado"}
+- Canal/superfície operacional: ${project.channel || "não informado"}
+- Riscos/objeções: ${project.objections || "não informado"}
+- Fase: ${project.stage || "não informado"}
 
-Gere a saída em formato estruturado para dashboard.
+Gere uma decisão estruturada para dashboard, sem inventar evidências.
 `;
+
+    const traceInput = {
+      projectId: project.id,
+      name: project.name,
+      product: project.product,
+      audience: project.audience,
+      objective: project.objective,
+      offer: project.offer,
+      channel: project.channel,
+      objections: project.objections,
+      stage: project.stage
+    };
 
     const response = await openai.responses.create({
       model: DEFAULT_MODEL,
@@ -97,7 +187,7 @@ Gere a saída em formato estruturado para dashboard.
       text: {
         format: {
           type: "json_schema",
-          name: "marketing_decision_output",
+          name: "decision_trace_output",
           strict: true,
           schema: outputSchema
         }
@@ -105,23 +195,17 @@ Gere a saída em formato estruturado para dashboard.
     });
 
     const content = response.output_text;
-    const parsed = JSON.parse(content) as MarketingOutput;
+    const parsed = validateAndStampDecisionTrace(
+      JSON.parse(content) as DecisionTraceOutput,
+      traceInput
+    );
 
     const run = await db.run.create({
       data: {
         projectId: project.id,
-        inputJson: JSON.stringify({
-          projectId: project.id,
-          product: project.product,
-          audience: project.audience,
-          objective: project.objective,
-          offer: project.offer,
-          channel: project.channel,
-          objections: project.objections,
-          stage: project.stage
-        }),
+        inputJson: JSON.stringify(traceInput),
         outputJson: JSON.stringify(parsed),
-        outputText: content,
+        outputText: JSON.stringify(parsed),
         model: DEFAULT_MODEL,
         status: "completed",
         responseId: response.id

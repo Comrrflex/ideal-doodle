@@ -5,9 +5,9 @@ export function Header() {
     <div className="card" style={{ marginBottom: 16 }}>
       <div className="space-between">
         <div>
-          <strong>Marketing SaaS MVP</strong>
+          <strong>TraceLayer</strong>
           <div className="muted" style={{ marginTop: 4 }}>
-            Diagnóstico auditável + estratégia + conteúdo pronto
+            Decisão estruturada + plano + trilha auditável
           </div>
         </div>
         <div className="row">

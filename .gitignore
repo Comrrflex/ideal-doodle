@@ -6,6 +6,10 @@
 node_modules/
 dist/
 build/
+.next/
+*.tsbuildinfo
+*.db
+*.db-journal
 
 # Logs
 *.log

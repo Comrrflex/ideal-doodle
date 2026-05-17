@@ -1,28 +1,101 @@
 {
-  "decisionId": "",
-  "timestamp": "",
-  "context": "",
-  "goal": "",
-  "facts": [],
-  "inferences": [],
-  "hypotheses": [],
-  "recommendedActions": [],
-  "executionPlan": [
-    {
-      "step": "",
-      "priority": "LOW",
-      "dependency": "",
-      "estimatedImpact": "",
-      "owner": ""
-    }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.tracelayer.local/decision-output.v2.json",
+  "title": "TraceLayer Decision Output",
+  "type": "object",
+  "required": [
+    "briefing",
+    "extracao_de_fatos",
+    "hipoteses",
+    "criterios",
+    "decisao",
+    "plano",
+    "trilha_auditavel"
   ],
-  "complianceFlags": [],
-  "auditTrail": {
-    "criteriaUsed": [],
-    "rulesTriggered": [],
-    "confidenceScore": 0,
-    "humanApprovalRequired": true,
-    "approved": false,
-    "decisionVersion": "v1"
+  "additionalProperties": false,
+  "properties": {
+    "briefing": {
+      "type": "object",
+      "required": ["contexto", "objetivo", "restricoes", "partes_interessadas"],
+      "additionalProperties": false,
+      "properties": {
+        "contexto": { "type": "string" },
+        "objetivo": { "type": "string" },
+        "restricoes": { "type": "array", "items": { "type": "string" } },
+        "partes_interessadas": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "extracao_de_fatos": {
+      "type": "object",
+      "required": ["fatos_confirmados", "evidencias_usadas", "lacunas"],
+      "additionalProperties": false,
+      "properties": {
+        "fatos_confirmados": { "type": "array", "items": { "type": "string" } },
+        "evidencias_usadas": { "type": "array", "items": { "type": "string" } },
+        "lacunas": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "hipoteses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["hipotese", "confianca", "como_validar"],
+        "additionalProperties": false,
+        "properties": {
+          "hipotese": { "type": "string" },
+          "confianca": { "type": "string", "enum": ["baixa", "media", "alta"] },
+          "como_validar": { "type": "string" }
+        }
+      }
+    },
+    "criterios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterio", "peso", "motivo"],
+        "additionalProperties": false,
+        "properties": {
+          "criterio": { "type": "string" },
+          "peso": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH"] },
+          "motivo": { "type": "string" }
+        }
+      }
+    },
+    "decisao": {
+      "type": "object",
+      "required": ["recomendacao", "tipo", "confianca", "requer_aprovacao_humana"],
+      "additionalProperties": false,
+      "properties": {
+        "recomendacao": { "type": "string" },
+        "tipo": { "type": "string" },
+        "confianca": { "type": "string", "enum": ["baixa", "media", "alta"] },
+        "requer_aprovacao_humana": { "type": "boolean" }
+      }
+    },
+    "plano": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["passo", "prioridade", "dono", "prazo_sugerido"],
+        "additionalProperties": false,
+        "properties": {
+          "passo": { "type": "string" },
+          "prioridade": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH"] },
+          "dono": { "type": "string" },
+          "prazo_sugerido": { "type": "string" }
+        }
+      }
+    },
+    "trilha_auditavel": {
+      "type": "object",
+      "required": ["regras_aplicadas", "riscos", "versao_decisao", "hash_referencia"],
+      "additionalProperties": false,
+      "properties": {
+        "regras_aplicadas": { "type": "array", "items": { "type": "string" } },
+        "riscos": { "type": "array", "items": { "type": "string" } },
+        "versao_decisao": { "type": "string" },
+        "hash_referencia": { "type": "string" }
+      }
+    }
   }
 }

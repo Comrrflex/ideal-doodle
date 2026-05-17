@@ -43,7 +43,7 @@ export default async function NewProjectPage() {
           <div>
             <h1 style={{ marginTop: 0 }}>Novo projeto</h1>
             <p className="muted">
-              Estruture o briefing. Quanto melhor a entrada, melhor a saída.
+              Estruture o briefing decisório. Quanto melhor a entrada, mais auditável fica a saída.
             </p>
           </div>
 
@@ -59,12 +59,12 @@ export default async function NewProjectPage() {
           </div>
 
           <div>
-            <label className="label">Produto/serviço</label>
+            <label className="label">Contexto ou ativo decisório</label>
             <textarea className="textarea" name="product" required />
           </div>
 
           <div>
-            <label className="label">Público-alvo</label>
+            <label className="label">Partes interessadas</label>
             <textarea className="textarea" name="audience" required />
           </div>
 
@@ -74,21 +74,21 @@ export default async function NewProjectPage() {
           </div>
 
           <div>
-            <label className="label">Oferta</label>
+            <label className="label">Restrições ou recursos</label>
             <textarea className="textarea" name="offer" />
           </div>
 
           <div>
-            <label className="label">Objeções</label>
-            <textarea className="textarea" name="objections" placeholder="é caro, não sei usar, vou fazer sozinho..." />
+            <label className="label">Riscos e objeções</label>
+            <textarea className="textarea" name="objections" placeholder="risco operacional, evidência fraca, baixa adoção..." />
           </div>
 
           <div>
-            <label className="label">Estágio</label>
-            <input className="input" name="stage" placeholder="Validação, lançamento, evergreen..." />
+            <label className="label">Fase</label>
+            <input className="input" name="stage" placeholder="triagem, validação, decisão, execução..." />
           </div>
 
-          <button className="button" type="submit">Salvar projeto</button>
+          <button className="button" type="submit">Salvar caso</button>
         </form>
       </div>
     </main>

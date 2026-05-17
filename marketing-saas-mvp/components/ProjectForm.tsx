@@ -28,12 +28,12 @@ export function ProjectForm({ action, submitLabel = "Salvar projeto", defaults }
       </div>
 
       <div>
-        <label className="label">Produto/serviço</label>
+        <label className="label">Contexto ou ativo decisório</label>
         <textarea className="textarea" name="product" defaultValue={defaults?.product} required />
       </div>
 
       <div>
-        <label className="label">Público-alvo</label>
+        <label className="label">Partes interessadas</label>
         <textarea className="textarea" name="audience" defaultValue={defaults?.audience} required />
       </div>
 
@@ -43,18 +43,18 @@ export function ProjectForm({ action, submitLabel = "Salvar projeto", defaults }
       </div>
 
       <div>
-        <label className="label">Oferta</label>
+        <label className="label">Restrições ou recursos</label>
         <textarea className="textarea" name="offer" defaultValue={defaults?.offer} />
       </div>
 
       <div>
-        <label className="label">Objeções</label>
-        <textarea className="textarea" name="objections" defaultValue={defaults?.objections} placeholder="é caro, vou fazer sozinho, não sei usar..." />
+        <label className="label">Riscos e objeções</label>
+        <textarea className="textarea" name="objections" defaultValue={defaults?.objections} placeholder="risco operacional, evidência fraca, baixa adoção..." />
       </div>
 
       <div>
-        <label className="label">Estágio</label>
-        <input className="input" name="stage" defaultValue={defaults?.stage} placeholder="Topo, meio, fundo, lançamento, validação..." />
+        <label className="label">Fase</label>
+        <input className="input" name="stage" defaultValue={defaults?.stage} placeholder="triagem, validação, decisão, execução..." />
       </div>
 
       <button className="button" type="submit">{submitLabel}</button>

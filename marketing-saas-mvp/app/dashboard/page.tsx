@@ -40,7 +40,7 @@ export default async function DashboardPage() {
         <div className="space-between" style={{ marginBottom: 16 }}>
           <div>
             <h2 style={{ margin: 0 }}>Projetos</h2>
-            <div className="muted">Crie o contexto e gere a resposta comercial.</div>
+            <div className="muted">Crie o briefing e gere uma decisão rastreável.</div>
           </div>
           <Link href="/dashboard/new" className="button">
             Novo projeto
@@ -52,7 +52,7 @@ export default async function DashboardPage() {
             <div className="card">
               <strong>Sem projetos ainda.</strong>
               <div className="muted" style={{ marginTop: 8 }}>
-                Crie o primeiro projeto para testar o fluxo de geração.
+                Crie o primeiro caso para testar o fluxo de decisão.
               </div>
             </div>
           ) : (

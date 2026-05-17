@@ -14,7 +14,7 @@ export default async function LoginPage() {
           <div>
             <h1 style={{ marginTop: 0 }}>Entrar</h1>
             <p className="muted">
-              Login simples de admin para validar seu MVP e começar a vender rápido.
+              Acesse o workspace de decisão estruturada e trilhas auditáveis.
             </p>
           </div>
           <div>

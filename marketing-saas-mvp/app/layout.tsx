@@ -2,8 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Marketing SaaS MVP",
-  description: "MVP para diagnóstico, estratégia e conteúdo com OpenAI."
+  title: "TraceLayer",
+  description: "Engine de decisão estruturada com rastreabilidade, governança e plano executável."
 };
 
 export default function RootLayout({

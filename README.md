@@ -1,155 +1,96 @@
+# TraceLayer
 
+Decision infrastructure for teams that need traceability, governance, and consistent execution.
 
-> **“Decision OS para MVPs SaaS — operado via API (futuro app)”**
+This repository is currently named `ideal-doodle`, but the product concept is stronger than the repo name. The product direction is **TraceLayer**: a structured decision engine that turns scattered context into a reviewable decision trace.
 
-# Decision OS para MVPs SaaS
+## What It Shows
 
-**Decisão, execução e governança — com rastreabilidade real**
+TraceLayer makes the decision lifecycle visible:
 
-## O que é
+```text
+briefing
+fact extraction
+hypotheses
+criteria
+decision
+plan
+auditable trail
+```
 
-Este projeto é um **sistema de decisão orientado a execução para MVPs SaaS**.
+That is the product.
 
-Ele transforma contexto em:
+It does not sell "AI". It sells fewer bad decisions, clearer accountability, operational memory, and governance that survives review.
 
-* Diagnóstico claro
-* Estratégia acionável
-* Plano executável
-* Registro auditável
+## Why It Matters
 
-Tudo com **rastreabilidade completa**.
+Most teams decide from:
 
----
+- scattered context;
+- undocumented assumptions;
+- weak criteria;
+- improvised execution;
+- no audit trail.
 
-## Problema que resolve
+TraceLayer creates a structured output that separates:
 
-Fundadores tomam decisões críticas com base em:
+- confirmed facts;
+- gaps;
+- hypotheses;
+- criteria;
+- recommended decision;
+- execution steps;
+- rules, risks, and versioning.
 
-* intuição solta
-* dados incompletos
-* pensamento não estruturado
+## Demo Output
 
-Resultado:
+See:
 
-* retrabalho
-* decisões frágeis
-* falta de consistência
-* impossível auditar depois
+- [examples/decision-trace-demo.json](examples/decision-trace-demo.json)
+- [schemas/decision-output.json](schemas/decision-output.json)
 
----
+The dashboard in `marketing-saas-mvp/` now renders the seven core blocks directly.
 
-## Solução
+## App
 
-Este sistema cria uma **camada operacional de decisão**:
+```bash
+cd marketing-saas-mvp
+npm install
+npx prisma generate
+npm run dev
+```
 
-* Estrutura o raciocínio
-* Registra critérios
-* Separa fato, inferência e hipótese
-* Gera planos executáveis
-* Mantém trilha auditável
+Required environment variables:
 
----
+```bash
+DATABASE_URL="file:./dev.db"
+SESSION_SECRET="replace-me"
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="replace-me"
+OPENAI_API_KEY="sk-..."
+OPENAI_MODEL="gpt-5.4-mini"
+```
 
-## Como funciona
+## Structure
 
-Baseado em uma arquitetura modular:
+```text
+decision-engine.ts          rule-based decision flow
+case-classifier.ts          case classification
+event-extractor.ts          event extraction
+legal-basis.ts              legal/normative basis inference
+validation.ts               output and input checks
+schemas/decision-output.json
+examples/decision-trace-demo.json
+marketing-saas-mvp/         dashboard prototype
+docs/positioning.md
+```
 
-* `instructions.md` → motor de decisão
-* `brief-template.md` → coleta estruturada
-* `output-schema.json` → padronização de saída
-* `conversation-starters.md` → ativação rápida
-* `README.md` → operação
+## Product Direction
 
-O sistema também incorpora:
+Priority 1: make the demo sell itself by showing the complete decision trace.
 
-* materiais do usuário
-* regras de governança
-* critérios institucionais
+Priority 2: harden the engine with schemas, validation, logs, tracing, and versioning.
 
----
+Priority 3: align identity with the enterprise value of the concept.
 
-## O que você consegue fazer
-
-* Definir posicionamento de produto
-* Criar estratégia de marketing
-* Estruturar MVPs
-* Planejar execução
-* Organizar decisões críticas
-* Documentar raciocínio para auditoria
-
----
-
-## Diferencial
-
-Não é geração de texto.
-
-É:
-
-* sistema de decisão
-* com critérios explícitos
-* com responsabilidade
-* com rastreabilidade
-
----
-
-## Princípios
-
-* Nada sem evidência
-* Toda decisão tem critério
-* Separação explícita:
-
-  * fato
-  * inferência
-  * hipótese
-* IA organiza — não inventa
-* Toda saída deve ser executável
-
----
-
-## Para quem é
-
-* Founders de SaaS
-* Operadores de MVP
-* Times que precisam decidir rápido sem perder controle
-
----
-
-## Roadmap 
-
-Este sistema evolui para:
-
-→ **Aplicação independente via API**
-
-Onde:
-
-* decisões ficam versionadas
-* histórico é preservado
-* outputs são estruturados
-* integração com stack do produto
-
----
-
-## Como usar agora
-
-1. Carregue os arquivos base
-2. Use o template de briefing
-3. Forneça contexto real
-4. Receba:
-
-   * diagnóstico
-   * estratégia
-   * execução
-   * registro auditável
-
----
-
-## Posicionamento final
-
-Isso não é um GPT.
-
-É:
-
-> **Infraestrutura de decisão para construir e operar MVPs SaaS com consistência.**
-
-
- 
+TraceLayer sits between AI tooling, operating systems, governance, and reasoning infrastructure. The opportunity is not another GPT wrapper; it is a decision middleware layer for B2B teams.

@@ -55,11 +55,11 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
             <div className="grid" style={{ marginTop: 20 }}>
               <div>
-                <div className="label">Produto/serviço</div>
+                <div className="label">Contexto ou ativo decisório</div>
                 <pre className="output">{project.product}</pre>
               </div>
               <div>
-                <div className="label">Público-alvo</div>
+                <div className="label">Partes interessadas</div>
                 <pre className="output">{project.audience}</pre>
               </div>
               <div>
@@ -67,15 +67,15 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 <pre className="output">{project.objective}</pre>
               </div>
               <div>
-                <div className="label">Oferta</div>
+                <div className="label">Restrições ou recursos</div>
                 <pre className="output">{project.offer || "Não informado"}</pre>
               </div>
               <div>
-                <div className="label">Objeções</div>
+                <div className="label">Riscos e objeções</div>
                 <pre className="output">{project.objections || "Não informado"}</pre>
               </div>
               <div>
-                <div className="label">Estágio</div>
+                <div className="label">Fase</div>
                 <pre className="output">{project.stage || "Não informado"}</pre>
               </div>
             </div>
@@ -117,7 +117,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             <div className="card">
               <strong>Pronto para gerar.</strong>
               <div className="muted" style={{ marginTop: 8 }}>
-                Clique em “Gerar estratégia” para criar o primeiro resultado.
+                Clique em “Gerar decisão” para criar briefing, fatos, hipóteses, critérios, plano e trilha.
               </div>
             </div>
           )}

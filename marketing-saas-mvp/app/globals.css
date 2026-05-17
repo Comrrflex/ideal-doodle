@@ -2,12 +2,13 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #0b1020;
-  color: #e8ebf2;
+  background: #f5f6f3;
+  color: #17211d;
 }
 
 a {
@@ -15,7 +16,9 @@ a {
   text-decoration: none;
 }
 
-button, input, textarea {
+button,
+input,
+textarea {
   font: inherit;
 }
 
@@ -24,17 +27,18 @@ button, input, textarea {
 }
 
 .container {
-  max-width: 1120px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 24px;
 }
 
-.card {
-  background: #141b34;
-  border: 1px solid #273055;
-  border-radius: 18px;
+.card,
+.hero-panel {
+  background: #ffffff;
+  border: 1px solid #d9ded6;
+  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 2px rgba(23, 33, 29, 0.05);
 }
 
 .grid {
@@ -54,25 +58,36 @@ button, input, textarea {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.meta-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
 @media (max-width: 900px) {
-  .grid-2, .grid-3 {
+  .grid-2,
+  .grid-3,
+  .meta-grid {
     grid-template-columns: 1fr;
   }
 }
 
 .label {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 8px;
-  color: #b5c0de;
+  color: #5c675f;
 }
 
-.input, .textarea, .select {
+.input,
+.textarea,
+.select {
   width: 100%;
-  border-radius: 12px;
-  border: 1px solid #32406f;
-  background: #0f1630;
-  color: #f3f6ff;
+  border-radius: 8px;
+  border: 1px solid #c9d0c7;
+  background: #fbfcfa;
+  color: #17211d;
   padding: 12px 14px;
 }
 
@@ -83,8 +98,8 @@ button, input, textarea {
 
 .button {
   border: 0;
-  border-radius: 12px;
-  background: #7c5cff;
+  border-radius: 8px;
+  background: #1f4d3a;
   color: white;
   padding: 12px 16px;
   cursor: pointer;
@@ -92,12 +107,13 @@ button, input, textarea {
 }
 
 .button.secondary {
-  background: #1c2646;
-  border: 1px solid #32406f;
+  background: #ffffff;
+  color: #1f4d3a;
+  border: 1px solid #9eb3a9;
 }
 
 .button.danger {
-  background: #b34056;
+  background: #8f2f3f;
 }
 
 .row {
@@ -105,6 +121,21 @@ button, input, textarea {
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.row-line {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(160px, 1.5fr) auto minmax(180px, 2fr);
+  align-items: start;
+  border-top: 1px solid #edf0eb;
+  padding-top: 12px;
+}
+
+@media (max-width: 760px) {
+  .row-line {
+    grid-template-columns: 1fr;
+  }
 }
 
 .space-between {
@@ -118,14 +149,15 @@ button, input, textarea {
 .badge {
   display: inline-block;
   padding: 6px 10px;
-  border-radius: 999px;
-  background: #202b51;
-  color: #cdd7f6;
+  border-radius: 8px;
+  background: #ecf2ee;
+  color: #254838;
   font-size: 12px;
+  font-weight: 700;
 }
 
 .muted {
-  color: #a8b4d8;
+  color: #637067;
 }
 
 .hero {
@@ -134,15 +166,36 @@ button, input, textarea {
 }
 
 .hero h1 {
-  font-size: 42px;
-  line-height: 1.05;
-  margin: 0 0 12px;
+  font-size: 44px;
+  line-height: 1.08;
+  margin: 14px 0 12px;
+  max-width: 920px;
 }
 
 .hero p {
   font-size: 18px;
-  color: #b6c0df;
-  max-width: 760px;
+  color: #4e5a52;
+  max-width: 780px;
+}
+
+.section-card h3 {
+  margin: 6px 0 12px;
+}
+
+.decision-card {
+  border-color: #8fa99c;
+}
+
+.eyebrow {
+  color: #607369;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.clean-list {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.6;
 }
 
 pre.output {

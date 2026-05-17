@@ -1,0 +1,103 @@
+{
+  "briefing": {
+    "contexto": "Empresa B2B precisa decidir se transforma um protótipo interno de análise operacional em produto vendável para gestores de compliance.",
+    "objetivo": "Definir o próximo movimento com menor risco: vender piloto, refatorar engine ou pausar.",
+    "restricoes": [
+      "Equipe pequena",
+      "Poucos dados de validação comercial",
+      "Necessidade de demonstrar rastreabilidade para compradores enterprise"
+    ],
+    "partes_interessadas": [
+      "Founder",
+      "Equipe de produto",
+      "Comprador de compliance",
+      "Operações internas"
+    ]
+  },
+  "extracao_de_fatos": {
+    "fatos_confirmados": [
+      "Existe um protótipo capaz de transformar contexto em decisão estruturada.",
+      "O comprador-alvo valoriza rastreabilidade, consistência e governança.",
+      "A nomenclatura atual parece experimental e reduz percepção enterprise."
+    ],
+    "evidencias_usadas": [
+      "Briefing do operador",
+      "Estrutura de saída com fatos, hipóteses, critérios, decisão, plano e auditoria",
+      "Requisitos de schemas, validação, logs, tracing e versionamento"
+    ],
+    "lacunas": [
+      "Ausência de métricas de adoção por usuário enterprise",
+      "Ausência de benchmark contra fluxo manual atual",
+      "Ausência de critérios de aprovação comercial formal"
+    ]
+  },
+  "hipoteses": [
+    {
+      "hipotese": "Reposicionar como TraceLayer aumenta percepção de infraestrutura enterprise.",
+      "confianca": "media",
+      "como_validar": "Testar landing e demo com 5 decisores de compliance ou operações."
+    },
+    {
+      "hipotese": "Mostrar trilha auditável vende melhor do que prometer IA.",
+      "confianca": "alta",
+      "como_validar": "Comparar pitch com e sem decisão rastreável em entrevistas de venda."
+    }
+  ],
+  "criterios": [
+    {
+      "criterio": "Rastreabilidade da decisão",
+      "peso": "HIGH",
+      "motivo": "É o principal diferencial contra ferramentas genéricas de IA."
+    },
+    {
+      "criterio": "Clareza para comprador enterprise",
+      "peso": "HIGH",
+      "motivo": "O produto precisa parecer governança operacional, não experimento."
+    },
+    {
+      "criterio": "Execução em curto prazo",
+      "peso": "MEDIUM",
+      "motivo": "O próximo passo deve caber em uma rodada curta de validação."
+    }
+  ],
+  "decisao": {
+    "recomendacao": "Reposicionar o projeto como TraceLayer e demonstrar uma decisão completa, com briefing, fatos, hipóteses, critérios, decisão, plano e trilha auditável.",
+    "tipo": "reposicionamento_produto",
+    "confianca": "alta",
+    "requer_aprovacao_humana": true
+  },
+  "plano": [
+    {
+      "passo": "Atualizar narrativa pública do repositório e app.",
+      "prioridade": "HIGH",
+      "dono": "produto",
+      "prazo_sugerido": "1 dia"
+    },
+    {
+      "passo": "Padronizar schema de saída decision-output.v2.",
+      "prioridade": "HIGH",
+      "dono": "engenharia",
+      "prazo_sugerido": "1 dia"
+    },
+    {
+      "passo": "Validar demo com decisores de operações/compliance.",
+      "prioridade": "MEDIUM",
+      "dono": "go-to-market",
+      "prazo_sugerido": "1 semana"
+    }
+  ],
+  "trilha_auditavel": {
+    "regras_aplicadas": [
+      "Separar fatos, hipóteses e lacunas",
+      "Toda decisão deve declarar critérios",
+      "Toda recomendação deve gerar plano executável",
+      "Aprovação humana permanece obrigatória"
+    ],
+    "riscos": [
+      "Branding ainda pode conflitar com nome do repositório",
+      "Demonstração precisa de casos reais para provar ROI"
+    ],
+    "versao_decisao": "decision-output.v2",
+    "hash_referencia": "demo-tracelayer-001"
+  }
+}

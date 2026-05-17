@@ -36,7 +36,7 @@ export function GenerateButton({ projectId }: { projectId: string }) {
   return (
     <div className="row">
       <button className="button" onClick={generate} disabled={loading}>
-        {loading ? "Gerando..." : "Gerar estratégia"}
+        {loading ? "Gerando..." : "Gerar decisão"}
       </button>
       {error ? <span style={{ color: "#ff9eb0" }}>{error}</span> : null}
     </div>
