@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { DEFAULT_MODEL, openai } from "@/lib/openai";
+import { DEFAULT_MODEL, getOpenAIClient, isMissingOpenAIKey } from "@/lib/openai";
 import { requireSession } from "@/lib/auth";
 import { DecisionTraceOutput } from "@/lib/types";
 import { validateAndStampDecisionTrace } from "@/lib/decisionTrace";
@@ -122,13 +122,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Projeto não encontrado." }, { status: 404 });
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json(
-        { error: "OPENAI_API_KEY não configurada." },
-        { status: 500 }
-      );
-    }
-
     const systemPrompt = `
 Você é o TraceLayer, um engine de decisão estruturada para organizações que precisam reduzir decisões ruins, preservar rastreabilidade e executar com governança.
 
@@ -178,6 +171,8 @@ Gere uma decisão estruturada para dashboard, sem inventar evidências.
       stage: project.stage
     };
 
+    const openai = getOpenAIClient();
+
     const response = await openai.responses.create({
       model: DEFAULT_MODEL,
       input: [
@@ -220,6 +215,14 @@ Gere uma decisão estruturada para dashboard, sem inventar evidências.
     });
   } catch (error) {
     console.error(error);
+
+    if (isMissingOpenAIKey(error)) {
+      return NextResponse.json(
+        { error: "OPENAI_API_KEY não configurada no servidor." },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
       {
         error:

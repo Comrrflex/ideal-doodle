@@ -22,12 +22,18 @@ It turns a raw briefing into:
 
 ## Setup
 
-Create `.env`:
+Create `.env.local` from the example file:
+
+```bash
+cp .env.example .env.local
+```
+
+Then fill in the server-side values:
 
 ```bash
 DATABASE_URL="file:./dev.db"
 OPENAI_API_KEY="sk-..."
-OPENAI_MODEL="gpt-5.4-mini"
+OPENAI_MODEL="gpt-5.4"
 ADMIN_EMAIL="admin@example.com"
 ADMIN_PASSWORD="replace-me"
 SESSION_SECRET="replace-me"
@@ -40,6 +46,12 @@ npm install
 npx prisma generate
 npx prisma db push
 npm run dev
+```
+
+Check the OpenAI wiring without making a model call:
+
+```bash
+curl http://localhost:3000/api/openai/health
 ```
 
 Open:

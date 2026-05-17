@@ -68,8 +68,12 @@ SESSION_SECRET="replace-me"
 ADMIN_EMAIL="admin@example.com"
 ADMIN_PASSWORD="replace-me"
 OPENAI_API_KEY="sk-..."
-OPENAI_MODEL="gpt-5.4-mini"
+OPENAI_MODEL="gpt-5.4"
 ```
+
+Use `marketing-saas-mvp/.env.example` as the local template. The health endpoint
+`/api/openai/health` confirms whether the OpenAI provider is configured without
+making a model call or exposing the API key.
 
 ## Structure
 
