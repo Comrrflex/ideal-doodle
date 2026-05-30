@@ -17,6 +17,10 @@ on:
 permissions:
   contents: read
 
+env:
+  TERRAFORM_VERSION: 1.15.5
+  TF_IN_AUTOMATION: "true"
+
 jobs:
   terraform:
     name: Terraform
@@ -30,10 +34,27 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v6
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v4
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    - name: Install Terraform
+      env:
+        TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+      run: |
+        terraform_zip="terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+        terraform_url="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/${terraform_zip}"
+
+        curl -fsSLo "$RUNNER_TEMP/$terraform_zip" "$terraform_url"
+        unzip -q "$RUNNER_TEMP/$terraform_zip" -d "$RUNNER_TEMP/terraform"
+        echo "$RUNNER_TEMP/terraform" >> "$GITHUB_PATH"
+
+        if [ -n "${TF_API_TOKEN:-}" ]; then
+          {
+            printf '%s\n' 'credentials "app.terraform.io" {'
+            printf '  token = "%s"\n' "$TF_API_TOKEN"
+            printf '%s\n' '}'
+          } > "$HOME/.terraformrc"
+        fi
+
+    - name: Terraform Version
+      run: terraform version
 
     - name: Detect Terraform files
       id: terraform_files
