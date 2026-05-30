@@ -8,6 +8,7 @@ node_modules/
 dist/
 build/
 .next/
+marketing-saas-mvp/.cache/
 *.tsbuildinfo
 *.db
 *.db-journal
