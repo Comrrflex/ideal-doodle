@@ -1,10 +1,16 @@
-name: NodeJS with Webpack
+name: NodeJS Build
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "marketing-saas-mvp/**"
+      - ".github/workflows/webpack.yml"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - "marketing-saas-mvp/**"
+      - ".github/workflows/webpack.yml"
 
 jobs:
   build:
@@ -21,8 +27,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: "npm"
+        cache-dependency-path: marketing-saas-mvp/package-lock.json
 
     - name: Build
+      working-directory: marketing-saas-mvp
       run: |
-        npm install
-        npx webpack
+        npm ci
+        npm run build
