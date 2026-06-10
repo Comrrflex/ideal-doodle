@@ -1,176 +1,124 @@
 # TraceLayer
 
-Decision Trace Engine for Governance, Auditability, and Operational Memory.
+TraceLayer e um app para transformar briefing solto em decisao estruturada, justificavel e auditavel.
 
-Transforme decisoes em ativos auditaveis.
+Em vez de responder como um chat generico, ele organiza:
 
-TraceLayer converte contexto disperso em decisoes estruturadas, revisaveis e reproduziveis. Em vez de apenas gerar respostas, o sistema cria uma trilha completa de raciocinio e execucao que pode ser auditada, validada e reutilizada.
+- fatos confirmados;
+- lacunas de informacao;
+- hipoteses;
+- criterios de decisao;
+- recomendacao;
+- plano de execucao;
+- trilha auditavel.
 
-Canonical app in this repository: `tracelayer-app/`
+O produto nao vende "IA". Ele vende menos decisao improvisada, mais clareza, mais memoria operacional e mais governanca.
 
-Archived copy kept only for review or later deletion: `archive/legacy-legal-engine/`
+## Onde esta o app
 
----
+App canonico deste repositorio:
 
-## The Problem
+- `tracelayer-app/`
 
-A maioria das decisoes empresariais acontece em:
+Copia antiga mantida separada apenas para revisao ou remocao futura:
 
-- reunioes sem registro adequado;
-- mensagens dispersas;
-- documentos desconectados;
-- criterios nao documentados;
-- execucao sem rastreabilidade.
+- `archive/legacy-legal-engine/`
 
-O resultado e perda de contexto, retrabalho, baixa governanca e dificuldade para justificar decisoes.
+Se voce quer rodar o produto, entre em `tracelayer-app/`.
 
----
-
-## The Solution
-
-TraceLayer transforma informacoes nao estruturadas em uma trilha de decisao organizada.
-
-### Output gerado
-
-- Confirmed Facts
-- Information Gaps
-- Hypotheses
-- Decision Criteria
-- Recommended Decision
-- Execution Plan
-- Auditable Trail
-
-That is the product.
-
----
-
-## Current State
-
-This repository had two branches of product logic drifting apart:
-
-- a TraceLayer dashboard app for structured decision traces;
-- an older legal/process engine prototype.
-
-To make the repository easier to understand, the real product app stays in `tracelayer-app/` and the older copied partition has been isolated in `archive/legacy-legal-engine/`.
-
----
-
-## Architecture
-
-```text
-User Input
-    ↓
-Fact Extraction
-    ↓
-Case Classification
-    ↓
-Hypothesis Generation
-    ↓
-Decision Engine
-    ↓
-Execution Plan
-    ↓
-Audit Trail
-```
-
-## Decision Lifecycle
-
-TraceLayer makes the decision lifecycle visible:
-
-1. Briefing
-2. Fact Extraction
-3. Hypotheses
-4. Criteria
-5. Decision
-6. Execution Plan
-7. Audit Trail
-
----
-
-## Repository Map
-
-- `tracelayer-app/` - canonical TraceLayer application and dashboard
-- `docs/` - positioning and narrative for the canonical app
-- `examples/` - shared demo outputs for the canonical app
-- `schemas/` - shared decision-output schemas for the canonical app
-- `archive/legacy-legal-engine/` - older copied legal/process engine, separated so it can be reviewed and deleted later if no longer needed
-
-## Shared Assets
-
-See:
-
-- [examples/decision-trace-demo.json](examples/decision-trace-demo.json)
-- [schemas/decision-output.json](schemas/decision-output.json)
-
-The dashboard in `tracelayer-app/` renders the seven core decision blocks directly.
-
----
-
-## App Setup
+## Quick Start
 
 ```bash
 cd tracelayer-app
+cp .env.example .env.local
 npm install
 npx prisma generate
 npx prisma db push
 npm run dev
 ```
 
-Required environment variables:
+Abra:
 
-```bash
+```text
+http://localhost:3000
+```
+
+## Variaveis de ambiente
+
+Template local:
+
+```text
+tracelayer-app/.env.example
+```
+
+Valores esperados:
+
+```env
 DATABASE_URL="file:./dev.db"
-SESSION_SECRET="replace-me"
-ADMIN_EMAIL="admin@example.com"
-ADMIN_PASSWORD="replace-me"
 OPENAI_API_KEY="sk-..."
 OPENAI_MODEL="gpt-5.4"
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="replace-me"
+SESSION_SECRET="replace-with-a-long-random-secret"
 ```
 
-Use `tracelayer-app/.env.example` as the template and `tracelayer-app/.env.local` for real local secrets. The health endpoint `/api/openai/health` confirms whether the OpenAI provider is configured without making a model call or exposing the API key.
+## Como usar
 
----
+1. Entre com o admin configurado no `.env.local`.
+2. Crie um projeto no dashboard.
+3. Preencha o briefing do caso.
+4. Clique em `Gerar decisao`.
+5. Revise a trilha no projeto.
 
-## Deployment
-
-Plataformas suportadas:
-
-- Railway
-- Render
-- Docker
-- Azure Container Apps
-
-Fluxo geral:
+Health check da configuracao OpenAI:
 
 ```bash
-npm install
-npm run build
-npm start
+curl http://localhost:3000/api/openai/health
 ```
 
----
+## O que o app entrega
 
-## Product Direction
+Hoje o app canonico ja cobre o fluxo principal:
 
-Priority 1: make the canonical app sell itself by showing the complete decision trace.
+- login local;
+- criacao de projetos;
+- persistencia com Prisma + SQLite;
+- geracao estruturada com OpenAI Responses API;
+- visualizacao de trilha decisoria no dashboard;
+- historico de execucoes por projeto.
 
-Priority 2: harden the app with shared schemas, validation, logs, tracing, and versioning.
+## Estrutura do repositorio
 
-Priority 3: remove or permanently archive anything that confuses the product identity.
+- `tracelayer-app/` - app Next.js principal
+- `docs/` - posicionamento e narrativa do produto
+- `examples/` - exemplos de saida
+- `schemas/` - schemas compartilhados de decisao
+- `archive/legacy-legal-engine/` - bloco legado arquivado
 
----
+## Stack
 
-## Business Positioning
+- Next.js App Router
+- TypeScript
+- Prisma
+- SQLite
+- OpenAI Responses API
 
-TraceLayer is not another AI assistant.
+## Tese do produto
 
-It is a Decision Middleware Platform that sits between:
+TraceLayer existe para tratar decisao como ativo operacional.
 
-- AI Models
-- Business Processes
-- Governance Requirements
-- Audit Requirements
+Isso significa:
 
-The goal is not generating answers.
+- separar fato de inferencia;
+- explicitar o que falta;
+- justificar recomendacoes;
+- registrar trilha para revisao;
+- reduzir perda de contexto entre pessoas e etapas.
 
-The goal is generating accountable decisions.
+## Proximos passos naturais
+
+- exportacao de relatorio;
+- versionamento de decisoes;
+- logs e tracing mais fortes;
+- camadas de governanca por conta ou workspace;
+- conectores e memoria institucional.
