@@ -2,45 +2,56 @@
 
 Decision Trace Engine for Governance, Auditability, and Operational Memory.
 
-Transforme decisões em ativos auditáveis.
+Transforme decisoes em ativos auditaveis.
 
-TraceLayer converte contexto disperso em decisões estruturadas, revisáveis e reproduzíveis. Em vez de apenas gerar respostas, o sistema cria uma trilha completa de raciocínio e execução que pode ser auditada, validada e reutilizada.
+TraceLayer converte contexto disperso em decisoes estruturadas, revisaveis e reproduziveis. Em vez de apenas gerar respostas, o sistema cria uma trilha completa de raciocinio e execucao que pode ser auditada, validada e reutilizada.
+
+Canonical app in this repository: `tracelayer-app/`
+
+Archived copy kept only for review or later deletion: `archive/legacy-legal-engine/`
 
 ---
 
 ## The Problem
 
-A maioria das decisões empresariais acontece em:
+A maioria das decisoes empresariais acontece em:
 
-- reuniões sem registro adequado;
+- reunioes sem registro adequado;
 - mensagens dispersas;
 - documentos desconectados;
-- critérios não documentados;
-- execução sem rastreabilidade.
+- criterios nao documentados;
+- execucao sem rastreabilidade.
 
-O resultado é perda de contexto, retrabalho, baixa governança e dificuldade para justificar decisões.
+O resultado e perda de contexto, retrabalho, baixa governanca e dificuldade para justificar decisoes.
 
 ---
 
 ## The Solution
 
-TraceLayer transforma informações não estruturadas em uma trilha de decisão organizada.
+TraceLayer transforma informacoes nao estruturadas em uma trilha de decisao organizada.
 
 ### Output gerado
 
-✅ Confirmed Facts
+- Confirmed Facts
+- Information Gaps
+- Hypotheses
+- Decision Criteria
+- Recommended Decision
+- Execution Plan
+- Auditable Trail
 
-✅ Information Gaps
+That is the product.
 
-✅ Hypotheses
+---
 
-✅ Decision Criteria
+## Current State
 
-✅ Recommended Decision
+This repository had two branches of product logic drifting apart:
 
-✅ Execution Plan
+- a TraceLayer dashboard app for structured decision traces;
+- an older legal/process engine prototype.
 
-✅ Auditable Trail
+To make the repository easier to understand, the real product app stays in `tracelayer-app/` and the older copied partition has been isolated in `archive/legacy-legal-engine/`.
 
 ---
 
@@ -62,11 +73,9 @@ Execution Plan
 Audit Trail
 ```
 
----
-
 ## Decision Lifecycle
 
-O TraceLayer torna visível todo o ciclo de decisão:
+TraceLayer makes the decision lifecycle visible:
 
 1. Briefing
 2. Fact Extraction
@@ -78,123 +87,47 @@ O TraceLayer torna visível todo o ciclo de decisão:
 
 ---
 
-## Example
+## Repository Map
 
-### Input
+- `tracelayer-app/` - canonical TraceLayer application and dashboard
+- `docs/` - positioning and narrative for the canonical app
+- `examples/` - shared demo outputs for the canonical app
+- `schemas/` - shared decision-output schemas for the canonical app
+- `archive/legacy-legal-engine/` - older copied legal/process engine, separated so it can be reviewed and deleted later if no longer needed
 
-```text
-Should we launch the MVP now or wait two more weeks?
-```
+## Shared Assets
 
-### Output
+See:
 
-```json
-{
-  "facts": [],
-  "hypotheses": [],
-  "criteria": [],
-  "recommendation": {},
-  "executionPlan": {},
-  "auditTrail": {}
-}
-```
+- [examples/decision-trace-demo.json](examples/decision-trace-demo.json)
+- [schemas/decision-output.json](schemas/decision-output.json)
 
-Exemplos completos:
-
-- `examples/decision-trace-demo.json`
-- `schemas/decision-output.json`
+The dashboard in `tracelayer-app/` renders the seven core decision blocks directly.
 
 ---
 
-## Project Structure
-
-```text
-decision-engine.ts          rule-based decision flow
-case-classifier.ts          case classification
-event-extractor.ts          event extraction
-legal-basis.ts              legal and normative inference
-validation.ts               input/output validation
-
-schemas/
-examples/
-docs/
-
-marketing-saas-mvp/
-```
-
----
-
-## SaaS Dashboard
-
-O dashboard demonstra visualmente os componentes principais da trilha de decisão.
-
-Recursos atuais:
-
-- Decision Trace Visualization
-- Structured Outputs
-- Governance Layer
-- OpenAI Integration
-- Audit-Oriented Workflow
-
----
-
-## Local Development
-
-### Requirements
-
-- Node.js
-- npm
-- Prisma
-
-### Installation
+## App Setup
 
 ```bash
-cd marketing-saas-mvp
-
+cd tracelayer-app
 npm install
-
 npx prisma generate
-
+npx prisma db push
 npm run dev
 ```
 
----
+Required environment variables:
 
-## Environment Variables
-
-```env
+```bash
 DATABASE_URL="file:./dev.db"
-
 SESSION_SECRET="replace-me"
-
 ADMIN_EMAIL="admin@example.com"
-
 ADMIN_PASSWORD="replace-me"
-
 OPENAI_API_KEY="sk-..."
-
 OPENAI_MODEL="gpt-5.4"
 ```
 
-Utilize:
-
-```text
-marketing-saas-mvp/.env.example
-```
-
-como modelo local.
-
----
-
-## Health Check
-
-Endpoint:
-
-```text
-/api/openai/health
-```
-
-Verifica se o provedor OpenAI está configurado corretamente sem realizar chamadas ao modelo.
+Use `tracelayer-app/.env.example` as the template and `tracelayer-app/.env.local` for real local secrets. The health endpoint `/api/openai/health` confirms whether the OpenAI provider is configured without making a model call or exposing the API key.
 
 ---
 
@@ -217,28 +150,13 @@ npm start
 
 ---
 
-## Product Roadmap
+## Product Direction
 
-### Phase 1
+Priority 1: make the canonical app sell itself by showing the complete decision trace.
 
-- Decision Trace Engine
-- Structured Outputs
-- SaaS Dashboard MVP
-- OpenAI Integration
+Priority 2: harden the app with shared schemas, validation, logs, tracing, and versioning.
 
-### Phase 2
-
-- Multi-Tenant SaaS
-- Role-Based Access Control
-- Versioned Audit Trails
-- Persistent Decision History
-
-### Phase 3
-
-- Enterprise Connectors
-- Compliance Packs
-- Marketplace Integrations
-- Decision Intelligence Analytics
+Priority 3: remove or permanently archive anything that confuses the product identity.
 
 ---
 
@@ -256,21 +174,3 @@ It is a Decision Middleware Platform that sits between:
 The goal is not generating answers.
 
 The goal is generating accountable decisions.
-
----
-
-## Vision
-
-Organizations already have data.
-
-Organizations already have AI.
-
-What they lack is traceability.
-
-TraceLayer creates the missing layer between reasoning and accountability.
-
----
-
-## License
-
-MIT

@@ -1,5 +1,7 @@
 # TraceLayer Positioning
 
+Repo note: the canonical product app lives in `tracelayer-app/`. The older legal/process copy has been isolated in `archive/legacy-legal-engine/` so the product identity stays clear.
+
 TraceLayer is decision infrastructure, not another AI app.
 
 The product should be sold around:

@@ -4,12 +4,12 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "marketing-saas-mvp/**"
+      - "tracelayer-app/**"
       - ".github/workflows/webpack.yml"
   pull_request:
     branches: [ "main" ]
     paths:
-      - "marketing-saas-mvp/**"
+      - "tracelayer-app/**"
       - ".github/workflows/webpack.yml"
 
 jobs:
@@ -28,10 +28,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: "npm"
-        cache-dependency-path: marketing-saas-mvp/package-lock.json
+        cache-dependency-path: tracelayer-app/package-lock.json
 
     - name: Build
-      working-directory: marketing-saas-mvp
+      working-directory: tracelayer-app
       run: |
         npm ci
         npm run build

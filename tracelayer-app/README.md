@@ -1,5 +1,7 @@
 # TraceLayer Dashboard
 
+This is the canonical application in this repository.
+
 Prototype dashboard for structured decision traces.
 
 It turns a raw briefing into:
