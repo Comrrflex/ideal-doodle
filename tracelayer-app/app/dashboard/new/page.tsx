@@ -10,6 +10,9 @@ export default async function NewProjectPage() {
   async function createProject(formData: FormData) {
     "use server";
 
+    const actionSession = await getSession();
+    if (!actionSession) redirect("/login");
+
     const name = String(formData.get("name") || "");
     const product = String(formData.get("product") || "");
     const audience = String(formData.get("audience") || "");
