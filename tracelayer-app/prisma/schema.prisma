@@ -35,26 +35,3 @@ model Run {
   createdAt     DateTime @default(now())
   project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
-
-model DecisionTrace {
-  id                 String   @id @default(cuid())
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-
-  context            String
-  goal               String
-  constraints        String?
-
-  factsJson          String
-  inferencesJson     String
-  hypothesesJson     String
-  recommendedJson    String
-  executionPlanJson  String
-  complianceFlagsJson String
-  auditTrailJson     String
-
-  confidenceScore    Float    @default(0)
-  humanApprovalRequired Boolean @default(true)
-  approved           Boolean  @default(false)
-  decisionVersion    String   @default("v1")
-}

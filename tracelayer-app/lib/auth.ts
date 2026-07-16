@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 
 const COOKIE_NAME = "mkt_saas_session";
+const SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 function getSecret() {
   const secret = process.env.SESSION_SECRET;
@@ -33,10 +34,14 @@ export function verifySessionValue(raw: string | undefined | null) {
   if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
 
   try {
-    return JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as {
+    const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as {
       email: string;
       t: number;
     };
+
+    if (Date.now() - parsed.t > SESSION_MAX_AGE_MS) return null;
+
+    return parsed;
   } catch {
     return null;
   }
