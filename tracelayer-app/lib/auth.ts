@@ -61,6 +61,23 @@ export async function requireSession() {
   return session;
 }
 
+export function hasValidAdvisorApiToken(authorization: string | null) {
+  const expectedToken = process.env.ADVISOR_API_TOKEN;
+  const prefix = "Bearer ";
+
+  if (!expectedToken || !authorization?.startsWith(prefix)) {
+    return false;
+  }
+
+  const expected = Buffer.from(expectedToken);
+  const received = Buffer.from(authorization.slice(prefix.length));
+
+  return (
+    expected.length === received.length &&
+    timingSafeEqual(expected, received)
+  );
+}
+
 export function isValidAdmin(email: string, password: string) {
   return (
     email === process.env.ADMIN_EMAIL &&
