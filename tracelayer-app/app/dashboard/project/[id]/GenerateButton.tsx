@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { OpenAISetupCard } from "@/components/OpenAISetupCard";
 
 type GenerateButtonProps = {
   projectId: string;
@@ -49,11 +48,6 @@ export function GenerateButton({ projectId, openAIConfigured }: GenerateButtonPr
       >
         {loading ? "Gerando..." : "Gerar decisão"}
       </button>
-      {!openAIConfigured ? (
-        <div style={{ minWidth: 280 }}>
-          <OpenAISetupCard compact />
-        </div>
-      ) : null}
       {error ? <span style={{ color: "#ff9eb0" }}>{error}</span> : null}
     </div>
   );
