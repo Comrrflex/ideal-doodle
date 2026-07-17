@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { OpenAISetupCard } from "@/components/OpenAISetupCard";
 
-export function GenerateButton({ projectId }: { projectId: string }) {
+type GenerateButtonProps = {
+  projectId: string;
+  openAIConfigured: boolean;
+};
+
+export function GenerateButton({ projectId, openAIConfigured }: GenerateButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -34,10 +40,20 @@ export function GenerateButton({ projectId }: { projectId: string }) {
   }
 
   return (
-    <div className="row">
-      <button className="button" onClick={generate} disabled={loading}>
+    <div className="row" style={{ alignItems: "flex-start" }}>
+      <button
+        className="button"
+        onClick={generate}
+        disabled={loading || !openAIConfigured}
+        title={openAIConfigured ? undefined : "Configure OPENAI_API_KEY antes de gerar."}
+      >
         {loading ? "Gerando..." : "Gerar decisão"}
       </button>
+      {!openAIConfigured ? (
+        <div style={{ minWidth: 280 }}>
+          <OpenAISetupCard compact />
+        </div>
+      ) : null}
       {error ? <span style={{ color: "#ff9eb0" }}>{error}</span> : null}
     </div>
   );

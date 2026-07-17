@@ -3,11 +3,14 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { Header } from "@/components/Header";
+import { OpenAISetupCard } from "@/components/OpenAISetupCard";
+import { isOpenAIConfigured } from "@/lib/openai";
 import { formatDate } from "@/lib/utils";
 
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) redirect("/login");
+  const openAIConfigured = isOpenAIConfigured();
 
   const [projects, runsCount] = await Promise.all([
     db.project.findMany({
@@ -21,6 +24,7 @@ export default async function DashboardPage() {
     <main className="page">
       <div className="container">
         <Header />
+        {!openAIConfigured ? <OpenAISetupCard /> : null}
 
         <div className="grid-3" style={{ marginBottom: 16 }}>
           <div className="card">
