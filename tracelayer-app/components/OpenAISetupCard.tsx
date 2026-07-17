@@ -13,7 +13,7 @@ export function OpenAISetupCard({ compact = false }: OpenAISetupCardProps) {
       }}
     >
       <div className="badge" style={{ marginBottom: 12 }}>
-        OpenAI pendente
+        OpenAI não configurado
       </div>
       <strong>Adicione a chave em OPENAI_API_KEY para liberar as gerações.</strong>
       <div className="muted" style={{ marginTop: 8 }}>
