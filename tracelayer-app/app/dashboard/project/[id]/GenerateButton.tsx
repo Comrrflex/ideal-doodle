@@ -12,7 +12,7 @@ export function GenerateButton({ projectId, openAIConfigured }: GenerateButtonPr
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const setupHintId = `openai-setup-hint-${projectId}`;
+  const openAISetupHintId = `openai-setup-hint-${projectId}`;
 
   async function generate() {
     try {
@@ -46,14 +46,14 @@ export function GenerateButton({ projectId, openAIConfigured }: GenerateButtonPr
           className="button"
           onClick={generate}
           disabled={loading || !openAIConfigured}
-          aria-describedby={!openAIConfigured ? setupHintId : undefined}
+          aria-describedby={!openAIConfigured ? openAISetupHintId : undefined}
         >
           {loading ? "Gerando..." : "Gerar decisão"}
         </button>
         {error ? <span style={{ color: "#ff9eb0" }}>{error}</span> : null}
       </div>
       {!openAIConfigured ? (
-        <div id={setupHintId} className="muted" style={{ marginTop: 8 }}>
+        <div id={openAISetupHintId} className="muted" style={{ marginTop: 8 }}>
           Configure a variável <code>OPENAI_API_KEY</code> no servidor para habilitar este botão.
         </div>
       ) : null}

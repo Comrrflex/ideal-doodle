@@ -2,14 +2,17 @@ type OpenAISetupCardProps = {
   compact?: boolean;
 };
 
+const OPENAI_SETUP_BORDER = "1px solid rgba(255, 158, 176, 0.35)";
+const OPENAI_SETUP_BACKGROUND = "rgba(255, 158, 176, 0.08)";
+
 export function OpenAISetupCard({ compact = false }: OpenAISetupCardProps) {
   return (
     <div
       className="card"
       style={{
         marginBottom: compact ? 0 : 16,
-        border: "1px solid rgba(255, 158, 176, 0.35)",
-        background: "rgba(255, 158, 176, 0.08)"
+        border: OPENAI_SETUP_BORDER,
+        background: OPENAI_SETUP_BACKGROUND
       }}
     >
       <div className="badge" style={{ marginBottom: 12 }}>
