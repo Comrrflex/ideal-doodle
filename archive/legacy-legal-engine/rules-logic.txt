@@ -1,0 +1,254 @@
+Legacy Legal Engine — consolidated rules logic
+
+Source files reviewed:
+- types.ts
+- case-classifier.ts
+- legal-basis.ts
+- event-extractor.ts
+- decision-engine.ts
+- validation.ts
+- integration-example.ts
+
+1. Case model and output structure
+
+The engine models five possible case types:
+- RH
+- fiscal
+- judicial
+- omissao
+- outro
+
+Confidence is always one of:
+- baixa
+- media
+- alta
+
+The supported suggested acts are:
+- deferimento
+- indeferimento
+- diligencia
+- arquivamento
+- cumprimento
+- encaminhamento
+
+Event types tracked by the system:
+- protocolo
+- requerimento
+- parecer
+- despacho
+- decisao
+- ciencia
+- publicacao
+- encerramento
+- auto_infracao
+- intimacao
+- impugnacao
+- ordem_judicial
+- outro
+
+The main decision output object stores:
+- process metadata (numero, tipo, unidade, interessado, fase_atual)
+- analysis (objective, proven facts, inferences, hypotheses, gaps, key docs)
+- legal basis (applicable norms, criteria, risks)
+- recommendation (conclusion, act type, suggested order, next steps, human validation checklist)
+- audit trail (confidence, documental sufficiency, rules applied, observations)
+
+2. Case classification rules
+
+The classification function classifyCase(project) first checks whether project.caseType was provided explicitly.
+- If there is a value, the engine normalizes it and returns a high-confidence classification.
+- The supported explicit strings are normalized as:
+  - rh, funcional -> RH
+  - fiscal, tributario, tributário -> fiscal
+  - judicial, cumprimento judicial -> judicial
+  - omissao, omissão, omissão administrativa -> omissao
+  - anything else -> outro
+
+If no case type is explicitly provided, it builds a text blob from:
+- summary
+- factualContext
+- evidence
+- legalContext
+- requestedAction
+
+Then it checks for trigger terms.
+
+RH detection logic:
+- terms: licença-prêmio, licença prêmio, servidor, vida funcional, assentamento, rh
+- returns: caseType = "RH"
+- confidence = "media"
+- reason = "Sinais funcionais/RH detectados no contexto."
+
+Fiscal detection logic:
+- terms: auto de infração, icms, difal, fecp, impugnação, revelia, crédito tributário
+- returns: caseType = "fiscal"
+- confidence = "media"
+- reason = "Sinais fiscais/tributários detectados no contexto."
+
+Judicial detection logic:
+- terms: mandado de segurança, ordem judicial, liminar, autoridade coatora, intimar, tjrj, vara de fazenda
+- returns: caseType = "judicial"
+- confidence = "media"
+- reason = "Sinais de cumprimento judicial detectados no contexto."
+
+Omissão detection logic:
+- terms: sem decisão, omissão administrativa, prazo excedido, prazo superado, mora administrativa, ausência de decisão
+- returns: caseType = "omissao"
+- confidence = "media"
+- reason = "Sinais de omissão administrativa detectados no contexto."
+
+If none match:
+- caseType = "outro"
+- confidence = "baixa"
+- reason = "Não foi possível classificar o caso com confiança suficiente."
+
+3. Legal basis rules
+
+The project normalizes the legal context and extracts cited norms from the textual inputs:
+- project.legalContext
+- project.summary
+- project.evidence
+- project.factualContext
+
+It checks the lower-case text for these patterns:
+- "5.427/2009" -> Lei Estadual nº 5.427/2009
+- "2.473/1979" -> Decreto nº 2.473/1979
+- "2.657/96" or "2.657/1996" -> Lei nº 2.657/1996
+- "87/96" or "87/1996" -> Lei Complementar nº 87/1996
+- "ctn" -> CTN
+- "12.016/09" or "12.016/2009" -> Lei nº 12.016/2009
+- "convênio icms" or "convenio icms" -> Convênios ICMS aplicáveis
+
+The system also suggests probable norms based on case type:
+- RH -> ["Lei Estadual nº 5.427/2009"]
+- fiscal -> ["Lei nº 2.657/1996", "Lei Complementar nº 87/1996", "CTN", "Convênios ICMS aplicáveis"]
+- judicial -> ["Lei Estadual nº 5.427/2009", "Constituição Federal, art. 5º, LXXVIII", "Lei nº 12.016/2009"]
+- omissao -> ["Lei Estadual nº 5.427/2009", "Decreto nº 2.473/1979", "Constituição Federal, art. 5º, LXXVIII"]
+- outro -> ["Lei Estadual nº 5.427/2009"]
+
+The result contains:
+- citedNorms: norms actually found in context
+- probableNorms: norms inferred from case class
+- reasons: two explanations about extraction and suggestion logic
+
+4. Event extraction rules
+
+The engine scans a combined lower-case string built from:
+- summary
+- factualContext
+- evidence
+
+The rules table is:
+- protocolo -> terms: ["protocol", "protocolo"] -> "Há sinal de protocolo do feito."
+- requerimento -> terms: ["requerimento", "pedido"] -> "Há sinal de requerimento/pedido administrativo."
+- parecer -> terms: ["parecer", "manifestação técnica"] -> "Há sinal de parecer ou manifestação técnica."
+- despacho -> terms: ["despacho"] -> "Há sinal de despacho administrativo."
+- decisao -> terms: ["decisão", "defiro", "indefiro", "concedo", "julgo"] -> "Há sinal de decisão administrativa ou julgamento."
+- ciencia -> terms: ["ciência", "ciente"] -> "Há sinal de ciência do interessado."
+- publicacao -> terms: ["publicação", "publicado"] -> "Há sinal de publicação formal."
+- encerramento -> terms: ["arquivamento", "encerramento"] -> "Há sinal de encerramento/arquivamento."
+- auto_infracao -> terms: ["auto de infração"] -> "Há sinal de auto de infração."
+- intimacao -> terms: ["intimação", "intimado"] -> "Há sinal de intimação."
+- impugnacao -> terms: ["impugnação", "defesa"] -> "Há sinal de impugnação/defesa."
+- ordem_judicial -> terms: ["mandado de segurança", "liminar", "ordem judicial"] -> "Há sinal de ordem judicial."
+
+During extraction, duplicate events are removed using a dedupe function.
+
+Phase inference rules:
+- if encerramento exists -> currentPhase = "encerramento"
+- else if ciencia and decisao exist -> "pós-decisão com ciência"
+- else if decisao exists -> "decisão"
+- else if parecer exists -> "instrução técnica"
+- else if requerimento or protocolo exists -> "instrução inicial"
+- else -> "fase não identificada"
+
+5. Decision flow rules
+
+The base decision function decideFlow(context) starts by collecting criteria and reasons. If any gap exists in context.gaps, it adds:
+- "Existem lacunas de informação relevantes."
+- "O contexto contém lacunas que exigem cautela decisória."
+
+RH flow:
+- If encerramento is present -> suggestedAct = "arquivamento"; confidence = "alta"; requiresHumanReview = true; blocksMeritDecision = false; reason = "Caso funcional aparentemente concluído."
+- Else if decisao and ciencia exist and no critical gap exists -> suggestedAct = "arquivamento"; confidence = "alta"; criteria include "Há decisão e ciência do interessado." and "Não há lacuna crítica identificada."; reason = "Fluxo funcional compatível com encerramento do processo."
+- Otherwise -> suggestedAct = "diligencia"; confidence = "media"; requiresHumanReview = true; blocksMeritDecision = true; reason = "O processo funcional não demonstra claramente decisão + ciência."
+
+Fiscal flow:
+- If auto_infracao and intimacao exist, no impugnacao exists, and no gaps exist -> suggestedAct = "encaminhamento"; confidence = "alta"; criteria: auto de infração, intimação, and no impugnação; reason = "Fluxo fiscal compatível com revelia/manutenção, sujeito à confirmação humana."
+- Else if impugnacao exists -> suggestedAct = "encaminhamento"; confidence = "media"; requiresHumanReview = true; blocksMeritDecision = true; reason = "Não é seguro tratar como revelia automática."
+- Otherwise -> suggestedAct = "diligencia"; confidence = "media"; requiresHumanReview = true; blocksMeritDecision = true; reason = "Contexto fiscal insuficiente para fechamento."
+
+Judicial flow:
+- If ordem_judicial exists -> suggestedAct = "cumprimento"; confidence = "alta"; reason = "Prioridade máxima para cumprimento da determinação judicial."
+- Otherwise -> suggestedAct = "encaminhamento"; confidence = "media"; requiresHumanReview = true; blocksMeritDecision = true; reason = "Necessária conferência do conteúdo judicial."
+
+Omissão flow:
+- Always suggestedAct = "encaminhamento"
+- confidence = hasGap(context) ? "media" : "alta"
+- requiresHumanReview = true
+- blocksMeritDecision = false
+- reason = "Fluxo compatível com saneamento prioritário ou decisão pendente."
+
+Fallback flow:
+- suggestedAct = "diligencia"
+- confidence = "baixa"
+- requiresHumanReview = true
+- blocksMeritDecision = true
+- reason = "Não há base suficiente para ato mais específico."
+
+6. Validation rules
+
+The validation function validateDecisionOutput(output) rejects invalid outputs if any of the following are empty:
+- output.analise.fatos_comprovados
+- output.recomendacao.checklist_validacao_humana
+- output.fundamentacao.criterios_utilizados
+- output.auditoria.regras_aplicadas
+
+It throws errors like:
+- "Saída inválida: sem fatos comprovados."
+- "Saída inválida: sem checklist de validação humana."
+- "Saída inválida: sem critérios utilizados."
+- "Saída inválida: sem registro de regras aplicadas."
+
+The gap extractor inferGapsFromProject(project) adds missing information warnings for:
+- missing summary
+- missing factualContext
+- missing evidence
+- missing legalContext
+
+The resulting list uses messages like:
+- "Resumo do caso ausente."
+- "Contexto fático ausente."
+- "Evidências/documentos-base ausentes."
+- "Base normativa não informada."
+
+7. Assembly / integration flow
+
+The integration example buildDecisionContext(project) assembles the full rule pipeline in this order:
+1. classifyCase(project)
+2. extractEvents(project)
+3. inferCurrentPhase(events)
+4. getLegalBasis(classification.caseType, project)
+5. inferGapsFromProject(project)
+6. build a context object with:
+   - processNumber
+   - caseType
+   - currentPhase
+   - facts = [summary, factualContext, evidence]
+   - events
+   - legalBasis = citedNorms + probableNorms
+   - risks = [project.risks] if present
+   - gaps
+7. decideFlow(context)
+8. return an object with classification, events, currentPhase, legalBasis, context, and decision
+
+8. Summary of operational idea
+
+This archive is not the canonical application. It is a separate legal/process decision engine designed to:
+- classify the type of matter or process
+- extract legal and procedural events from case text
+- infer legal basis and gaps
+- decide whether the next step should be diligence, compliance, referral, closure, or a more specific act
+- keep a human validation checklist and audit outputs so the process remains reviewable
+
+The system is intentionally conservative: when information is missing, it favors diligence or referral instead of a definitive merits decision.
