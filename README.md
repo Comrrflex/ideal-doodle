@@ -1,6 +1,6 @@
-# TraceLayer
+# A Força
 
-TraceLayer transforma um briefing, problema ou contexto incompleto em uma **decisão recomendada, justificável e auditável**.
+A Força transforma um briefing, problema ou contexto incompleto em uma **decisão recomendada, justificável e auditável**.
 
 Em vez de responder como um chat genérico, o sistema organiza:
 
@@ -22,7 +22,7 @@ O cliente apresenta um problema real, por exemplo:
 
 > Devemos lançar agora, adiar o lançamento ou reduzir o escopo do MVP?
 
-O TraceLayer analisa o briefing e apresenta uma saída estruturada como esta:
+A Força analisa o briefing e apresenta uma saída estruturada como esta:
 
 ### Decisão recomendada
 
@@ -53,7 +53,7 @@ A recomendação é um **instrumento de apoio à decisão**. A aprovação final
 ## Como funciona
 
 1. O cliente descreve o problema, objetivo e contexto.
-2. O TraceLayer separa fatos, hipóteses e lacunas.
+2. A Força separa fatos, hipóteses e lacunas.
 3. O sistema define os critérios relevantes para a decisão.
 4. As alternativas são comparadas com riscos, impactos e evidências.
 5. O cliente recebe uma recomendação principal e um plano de execução.
@@ -61,7 +61,7 @@ A recomendação é um **instrumento de apoio à decisão**. A aprovação final
 
 ## Casos de uso
 
-TraceLayer pode apoiar decisões como:
+A Força pode apoiar decisões como:
 
 - lançar, adiar ou reduzir o escopo de um produto;
 - aprovar ou revisar uma proposta;
@@ -83,7 +83,7 @@ O cliente fornece:
 - alternativas já consideradas;
 - documentos ou referências relevantes, quando aplicável.
 
-O TraceLayer entrega:
+A Força entrega:
 
 - resumo executivo;
 - decisão recomendada;
@@ -187,7 +187,7 @@ O app canônico já cobre o fluxo principal:
 
 ## Tese do produto
 
-TraceLayer existe para tratar decisão como ativo operacional.
+A Força existe para tratar decisão como ativo operacional.
 
 Isso significa:
 
@@ -199,7 +199,7 @@ Isso significa:
 
 ## Limites
 
-TraceLayer não substitui aprovação executiva, parecer jurídico, avaliação regulatória ou responsabilidade profissional. Ele estrutura o problema, apresenta uma recomendação fundamentada e torna visíveis os riscos, pressupostos e limites usados na análise.
+A Força não substitui aprovação executiva, parecer jurídico, avaliação regulatória ou responsabilidade profissional. O sistema estrutura o problema, apresenta uma recomendação fundamentada e torna visíveis os riscos, pressupostos e limites usados na análise.
 
 ## Próximos passos naturais
 
