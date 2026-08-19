@@ -123,7 +123,7 @@ export async function POST(req: Request) {
     }
 
     const systemPrompt = `
-Você é o TraceLayer, um engine de decisão estruturada para organizações que precisam reduzir decisões ruins, preservar rastreabilidade e executar com governança.
+Você é A Força, um engine de decisão estruturada para organizações que precisam reduzir decisões ruins, preservar rastreabilidade e executar com governança.
 
 Siga exatamente esta ordem de raciocínio e saída:
 1. Briefing
