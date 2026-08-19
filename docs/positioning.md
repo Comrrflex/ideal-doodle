@@ -1,8 +1,8 @@
-# TraceLayer Positioning
+# A Força — Positioning
 
 Repo note: the canonical product app lives in `tracelayer-app/`. The older legal/process copy has been isolated in `archive/legacy-legal-engine/` so the product identity stays clear.
 
-TraceLayer is decision infrastructure, not another AI app.
+A Força is decision infrastructure, not another AI app.
 
 The product should be sold around:
 
@@ -21,7 +21,7 @@ Lead with the operational failure:
 
 > Teams make important decisions from scattered context, weak assumptions, and undocumented reasoning.
 
-TraceLayer turns that into:
+A Força turns that into:
 
 1. briefing;
 2. fact extraction;
@@ -35,17 +35,16 @@ TraceLayer turns that into:
 
 The repository name `ideal-doodle` reads experimental. The concept reads enterprise.
 
-Suggested product identity:
+Product identity:
 
-> TraceLayer
+> A Força
 
 Why it fits:
 
-- communicates traceability;
-- sounds like infrastructure;
-- works for B2B and compliance;
-- does not overpromise autonomous intelligence;
-- supports future positioning as middleware for decisions.
+- communicates decision support and capacity for action;
+- is direct and memorable;
+- separates the commercial brand from the technical implementation;
+- supports a broad business positioning without overpromising autonomous intelligence.
 
 ## Proof Demo
 
