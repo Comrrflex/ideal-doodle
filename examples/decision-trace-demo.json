@@ -33,7 +33,7 @@
   },
   "hipoteses": [
     {
-      "hipotese": "Reposicionar como TraceLayer aumenta percepção de infraestrutura enterprise.",
+      "hipotese": "Reposicionar como A Força aumenta percepção de um produto decisório claro e memorável.",
       "confianca": "media",
       "como_validar": "Testar landing e demo com 5 decisores de compliance ou operações."
     },
@@ -61,7 +61,7 @@
     }
   ],
   "decisao": {
-    "recomendacao": "Reposicionar o projeto como TraceLayer e demonstrar uma decisão completa, com briefing, fatos, hipóteses, critérios, decisão, plano e trilha auditável.",
+    "recomendacao": "Reposicionar o projeto como A Força e demonstrar uma decisão completa, com briefing, fatos, hipóteses, critérios, decisão, plano e trilha auditável.",
     "tipo": "reposicionamento_produto",
     "confianca": "alta",
     "requer_aprovacao_humana": true
@@ -98,6 +98,6 @@
       "Demonstração precisa de casos reais para provar ROI"
     ],
     "versao_decisao": "decision-output.v2",
-    "hash_referencia": "demo-tracelayer-001"
+    "hash_referencia": "demo-a-forca-001"
   }
 }
