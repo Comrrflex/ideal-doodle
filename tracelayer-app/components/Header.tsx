@@ -5,7 +5,7 @@ export function Header() {
     <div className="card" style={{ marginBottom: 16 }}>
       <div className="space-between">
         <div>
-          <strong>TraceLayer</strong>
+          <strong>A Força</strong>
           <div className="muted" style={{ marginTop: 4 }}>
             Decisão estruturada + plano + trilha auditável
           </div>
