@@ -8,7 +8,7 @@ export default function HomePage() {
           <span className="badge">Decision trace engine</span>
           <h1>Reduza decisões ruins com briefing, critérios, decisão, plano e auditoria.</h1>
           <p>
-            TraceLayer transforma contexto solto em uma saída institucional:
+            A Força transforma contexto solto em uma saída institucional:
             fatos separados de hipóteses, critérios explícitos, plano executável
             e trilha auditável para revisão.
           </p>
