@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.tracelayer.local/decision-output.v2.json",
-  "title": "TraceLayer Decision Output",
+  "title": "A Força Decision Output",
   "type": "object",
   "required": [
     "briefing",
