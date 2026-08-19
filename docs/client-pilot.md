@@ -1,8 +1,8 @@
-# Piloto TraceLayer para clientes
+# Piloto A Força para clientes
 
 ## Objetivo
 
-O piloto demonstra como o TraceLayer transforma um problema real de gestão em uma recomendação estruturada, justificável e auditável.
+O piloto demonstra como A Força transforma um problema real de gestão em uma recomendação estruturada, justificável e auditável.
 
 O foco não é entregar uma resposta genérica. O foco é permitir que o cliente veja:
 
@@ -40,7 +40,7 @@ O cliente fornece:
 
 ## Processamento
 
-O TraceLayer:
+A Força:
 
 1. separa fatos, hipóteses e lacunas;
 2. identifica critérios de decisão;
@@ -77,9 +77,9 @@ O piloto é bem-sucedido quando o cliente consegue responder claramente:
 
 ## Responsabilidade e limites
 
-TraceLayer é um sistema de apoio à decisão.
+A Força é um sistema de apoio à decisão.
 
-Ele não substitui:
+O sistema não substitui:
 
 - aprovação executiva;
 - parecer jurídico;
@@ -87,7 +87,7 @@ Ele não substitui:
 - julgamento profissional especializado;
 - responsabilidade institucional.
 
-A decisão final continua com as pessoas e organizações competentes. O valor do TraceLayer está em tornar a recomendação, os pressupostos, as evidências e os riscos visíveis e revisáveis.
+A decisão final continua com as pessoas e organizações competentes. O valor de A Força está em tornar a recomendação, os pressupostos, as evidências e os riscos visíveis e revisáveis.
 
 ## Próximo passo comercial
 
