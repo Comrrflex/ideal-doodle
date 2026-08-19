@@ -63,14 +63,22 @@ export async function requireSession() {
 
 export function hasValidAdvisorApiToken(authorization: string | null) {
   const expectedToken = process.env.ADVISOR_API_TOKEN;
-  const prefix = "Bearer ";
+  if (!expectedToken) {
+    return false;
+  }
 
-  if (!expectedToken || !authorization?.startsWith(prefix)) {
+  const rawHeader = authorization?.trim();
+  if (!rawHeader) {
+    return false;
+  }
+
+  const match = /^Bearer\s+(.+)$/i.exec(rawHeader);
+  if (!match) {
     return false;
   }
 
   const expected = Buffer.from(expectedToken);
-  const received = Buffer.from(authorization.slice(prefix.length));
+  const received = Buffer.from(match[1].trim());
 
   return (
     expected.length === received.length &&
