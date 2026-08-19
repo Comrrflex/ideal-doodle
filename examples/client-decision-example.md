@@ -1,6 +1,6 @@
 # Exemplo de decisão apresentada ao cliente
 
-> Exemplo fictício para demonstrar o formato de saída do TraceLayer.
+> Exemplo fictício para demonstrar o formato de saída de A Força.
 
 ## Pergunta de decisão
 
@@ -90,4 +90,4 @@ A recomendação deve ser revista se:
 
 ## Limite da recomendação
 
-O TraceLayer apresenta a melhor decisão com base nas informações disponíveis e torna explícitos seus fundamentos. A aprovação final e a responsabilidade pela execução permanecem com a organização.
+A Força apresenta a melhor decisão com base nas informações disponíveis e torna explícitos seus fundamentos. A aprovação final e a responsabilidade pela execução permanecem com a organização.
