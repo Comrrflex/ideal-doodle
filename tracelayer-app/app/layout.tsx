@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "TraceLayer",
+  title: "A Força",
   description: "Engine de decisão estruturada com rastreabilidade, governança e plano executável."
 };
 
