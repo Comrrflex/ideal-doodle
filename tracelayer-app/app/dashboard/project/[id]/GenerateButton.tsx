@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function GenerateButton({ projectId }: { projectId: string }) {
+type GenerateButtonProps = {
+  projectId: string;
+  openAIConfigured: boolean;
+};
+
+export function GenerateButton({ projectId, openAIConfigured }: GenerateButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const openAiSetupHintId = `openai-setup-hint-${projectId}`;
 
   async function generate() {
     try {
@@ -34,11 +40,23 @@ export function GenerateButton({ projectId }: { projectId: string }) {
   }
 
   return (
-    <div className="row">
-      <button className="button" onClick={generate} disabled={loading}>
-        {loading ? "Gerando..." : "Gerar decisão"}
-      </button>
-      {error ? <span style={{ color: "#ff9eb0" }}>{error}</span> : null}
+    <div>
+      <div className="row">
+        <button
+          className="button"
+          onClick={generate}
+          disabled={loading || !openAIConfigured}
+          aria-describedby={!openAIConfigured ? openAiSetupHintId : undefined}
+        >
+          {loading ? "Gerando..." : "Gerar decisão"}
+        </button>
+        {error ? <span style={{ color: "#ff9eb0" }}>{error}</span> : null}
+      </div>
+      {!openAIConfigured ? (
+        <div id={openAiSetupHintId} className="muted" style={{ marginTop: 8 }}>
+          Configure a variável <code>OPENAI_API_KEY</code> no servidor para habilitar este botão.
+        </div>
+      ) : null}
     </div>
   );
 }
